@@ -377,20 +377,21 @@ function CharacterSheets({initialData}) {
             </s-button>
           </s-stack>
 
-          <s-select
+          <s-choice-list
             label="Active character"
-            onChange={(event) => setActiveCharacter(event.currentTarget.value)}
+            values={[activeCharacter.id]}
+            onChange={(event) => setActiveCharacter(event.currentTarget.values?.[0] || activeCharacter.id)}
           >
             {collection.characters.map((character) => (
-              <s-option
+              <s-choice
                 key={character.id}
                 value={character.id}
                 selected={character.id === activeCharacter.id}
               >
                 {character.name || 'Unnamed Character'}
-              </s-option>
+              </s-choice>
             ))}
-          </s-select>
+          </s-choice-list>
         </s-stack>
       </s-section>
 
