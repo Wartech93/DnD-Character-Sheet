@@ -5,7 +5,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "shopify": "shopify",
-    "build": "remix vite:build && shopify app build",
+    "build": "remix vite:build",
+    "build:shopify": "remix vite:build && shopify app build",
     "dev": "shopify app dev",
     "info": "shopify app info",
     "generate": "shopify app generate",

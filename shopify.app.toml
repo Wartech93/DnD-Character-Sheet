@@ -19,7 +19,7 @@ scopes = "customer_read_customers,customer_write_customers,write_customers"
 [auth]
 redirect_urls = [ "https://dnd-character-sheet-an0x.onrender.com/auth/callback" ]
 
-[customer.metafields.app.dnd_character_sheets]
+[customer.metafields.dnd_character_sheets.character_sheets]
 type = "json"
 name = "D&D Character Sheets"
 description = "Stores a customer's D&D 3.5 character sheet collection"
