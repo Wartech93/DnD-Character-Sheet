@@ -281,54 +281,64 @@ function CharacterSheets({initialData}) {
     setMessage({tone: 'info', text: 'Character duplicated.'});
   }
 
-  function deleteCharacter() {
-    if (collection.characters.length === 1) {
-      setCollection((previous) => {
-        const resetCharacter = createEmptyCharacter('Valiant Initiate');
-        return {
-          ...previous,
-          activeCharacterId: resetCharacter.id,
-          characters: [resetCharacter],
-        };
-      });
-      setMessage({tone: 'warning', text: 'Last character replaced with a blank sheet.'});
-      return;
-    }
-
-    setCollection((previous) => {
-      const remainingCharacters = previous.characters.filter(
-        (character) => character.id !== previous.activeCharacterId
-      );
-
-      return {
-        ...previous,
-        activeCharacterId: remainingCharacters[0].id,
-        characters: remainingCharacters,
-      };
-    });
-    setMessage({tone: 'warning', text: 'Character removed from your collection.'});
-  }
-
-  async function handleSave() {
+  async function persistCollection(nextCollection, successMessage, toastMessage = 'Sheets saved') {
     setSaving(true);
     setMessage({tone: 'info', text: ''});
 
     try {
       const normalizedCollection = {
-        ...collection,
-        characters: collection.characters.map((character) => normalizeCharacter(character)),
+        ...nextCollection,
+        characters: nextCollection.characters.map((character) => normalizeCharacter(character)),
       };
 
       await saveCharacterCollection(normalizedCollection);
       setCollection(normalizedCollection);
-      setMessage({tone: 'success', text: 'Character sheets saved.'});
-      await shopify.toast.show('Sheets saved');
+      setMessage({tone: 'success', text: successMessage});
+      await shopify.toast.show(toastMessage);
+      return true;
     } catch (error) {
       console.error(error);
       setMessage({tone: 'critical', text: error.message || 'Could not save character sheets.'});
+      return false;
     } finally {
       setSaving(false);
     }
+  }
+
+  async function deleteCharacter() {
+    let nextCollection;
+
+    if (collection.characters.length === 1) {
+      const resetCharacter = createEmptyCharacter('Valiant Initiate');
+      nextCollection = {
+        ...collection,
+        activeCharacterId: resetCharacter.id,
+        characters: [resetCharacter],
+      };
+
+      await persistCollection(
+        nextCollection,
+        'Last character replaced with a blank sheet.',
+        'Last character reset'
+      );
+      return;
+    }
+
+    const remainingCharacters = collection.characters.filter(
+      (character) => character.id !== collection.activeCharacterId
+    );
+
+    nextCollection = {
+      ...collection,
+      activeCharacterId: remainingCharacters[0].id,
+      characters: remainingCharacters,
+    };
+
+    await persistCollection(nextCollection, 'Character removed from your collection.', 'Character deleted');
+  }
+
+  async function handleSave() {
+    await persistCollection(collection, 'Character sheets saved.');
   }
 
   return (
@@ -359,9 +369,9 @@ function CharacterSheets({initialData}) {
           {message.text ? <s-banner tone={message.tone}>{message.text}</s-banner> : null}
 
           <s-stack direction="inline" gap="small">
-            <s-button variant="secondary" onClick={addCharacter}>New character</s-button>
-            <s-button variant="secondary" onClick={duplicateCharacter}>Duplicate</s-button>
-            <s-button variant="secondary" tone="critical" onClick={deleteCharacter}>Delete</s-button>
+            <s-button variant="secondary" disabled={saving} onClick={addCharacter}>New character</s-button>
+            <s-button variant="secondary" disabled={saving} onClick={duplicateCharacter}>Duplicate</s-button>
+            <s-button variant="secondary" tone="critical" disabled={saving} onClick={deleteCharacter}>Delete</s-button>
             <s-button variant="primary" loading={saving} disabled={saving} onClick={handleSave}>
               Save all sheets
             </s-button>
@@ -369,11 +379,14 @@ function CharacterSheets({initialData}) {
 
           <s-select
             label="Active character"
-            value={activeCharacter.id}
             onChange={(event) => setActiveCharacter(event.currentTarget.value)}
           >
             {collection.characters.map((character) => (
-              <s-option key={character.id} value={character.id}>
+              <s-option
+                key={character.id}
+                value={character.id}
+                selected={character.id === activeCharacter.id}
+              >
                 {character.name || 'Unnamed Character'}
               </s-option>
             ))}
