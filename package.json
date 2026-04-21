@@ -1,0 +1,45 @@
+{
+  "name": "dnd-character-sheet",
+  "version": "1.0.0",
+  "type": "module",
+  "license": "UNLICENSED",
+  "scripts": {
+    "shopify": "shopify",
+    "build": "remix vite:build && shopify app build",
+    "dev": "shopify app dev",
+    "info": "shopify app info",
+    "generate": "shopify app generate",
+    "deploy": "shopify app deploy",
+    "start": "remix-serve ./build/server/index.js",
+    "docker-start": "npm run setup && npm run start",
+    "setup": "prisma generate && prisma db push",
+    "prisma": "prisma",
+    "vite": "vite"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.6.0",
+    "@remix-run/dev": "^2.16.8",
+    "@remix-run/node": "^2.16.8",
+    "@remix-run/react": "^2.16.8",
+    "@remix-run/serve": "^2.16.8",
+    "@shopify/app-bridge-react": "^4.1.6",
+    "@shopify/polaris": "^13.9.5",
+    "@shopify/shopify-api": "^11.13.0",
+    "@shopify/shopify-app-remix": "^4.1.6",
+    "@shopify/shopify-app-session-storage-prisma": "^6.0.4",
+    "isbot": "^5.1.17",
+    "prisma": "^6.6.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^5.4.11",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "trustedDependencies": [
+    "@shopify/plugin-cloudflare"
+  ],
+  "author": "royce",
+  "private": true,
+  "workspaces": [
+    "extensions/*"
+  ]
+}

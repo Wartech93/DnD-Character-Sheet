@@ -1,0 +1,27 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "e8f07ce2253487970e93130f795c4828"
+name = "DnDSheets"
+application_url = "https://your-public-app-url.example.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+include_config_on_deploy = true
+
+[webhooks]
+api_version = "2026-07"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "customer_read_customers,customer_write_customers,write_customers"
+
+[auth]
+redirect_urls = [ "https://your-public-app-url.example.com/auth/callback" ]
+
+[customer.metafields.app.dnd_character_sheets]
+type = "json"
+name = "D&D Character Sheets"
+description = "Stores a customer's D&D 3.5 character sheet collection"
+access.customer_account = "read_write"
+access.admin = "merchant_read"

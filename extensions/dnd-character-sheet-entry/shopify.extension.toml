@@ -1,0 +1,16 @@
+api_version = "2026-01"
+
+[[extensions]]
+name = "D&D Character Sheet Entry"
+handle = "dnd-character-sheet-entry"
+
+uid = "7026c6d8-3cfa-b5b0-fd72-a7b7a142d1eb92beab0a"
+
+type = "ui_extension"
+
+[[extensions.targeting]]
+module = "./src/ProfileEntry.jsx"
+target = "customer-account.profile.block.render"
+
+[extensions.capabilities]
+api_access = true
