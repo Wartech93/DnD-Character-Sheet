@@ -373,9 +373,9 @@ function CharacterSheets({initialData}) {
             onChange={(event) => setActiveCharacter(event.currentTarget.value)}
           >
             {collection.characters.map((character) => (
-              <option key={character.id} value={character.id}>
+              <s-option key={character.id} value={character.id}>
                 {character.name || 'Unnamed Character'}
-              </option>
+              </s-option>
             ))}
           </s-select>
         </s-stack>
