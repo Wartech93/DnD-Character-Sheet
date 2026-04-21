@@ -2,7 +2,7 @@
 
 client_id = "e8f07ce2253487970e93130f795c4828"
 name = "DnDSheets"
-application_url = "https://your-public-app-url.example.com"
+application_url = "https://dnd-character-sheet-an0x.onrender.com"
 embedded = true
 
 [build]
@@ -17,7 +17,7 @@ api_version = "2026-07"
 scopes = "customer_read_customers,customer_write_customers,write_customers"
 
 [auth]
-redirect_urls = [ "https://your-public-app-url.example.com/auth/callback" ]
+redirect_urls = [ "https://dnd-character-sheet-an0x.onrender.com/auth/callback" ]
 
 [customer.metafields.app.dnd_character_sheets]
 type = "json"
