@@ -12,13 +12,14 @@ import prisma from './db.server';
 
 const METAFIELD_KEY = 'character_sheets';
 const METAFIELD_NAMESPACE = '$app:dnd_character_sheets';
+const APP_URL = process.env.SHOPIFY_APP_URL || process.env.RENDER_EXTERNAL_URL || '';
 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
   apiSecretKey: process.env.SHOPIFY_API_SECRET || '',
   apiVersion: ApiVersion.October24,
   scopes: process.env.SCOPES?.split(','),
-  appUrl: process.env.SHOPIFY_APP_URL || '',
+  appUrl: APP_URL,
   authPathPrefix: '/auth',
   sessionStorage: new PrismaSessionStorage(prisma),
   distribution: AppDistribution.AppStore,
